@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import { MemoryRouter } from 'react-router-dom'
 // Pages (on les créera juste après)
 import LoginEtudiant   from './pages/LoginEtudiant'
 import LoginAdmin      from './pages/LoginAdmin'
