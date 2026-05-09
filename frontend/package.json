@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://zzidani4800.github.io/activites-universitaires",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

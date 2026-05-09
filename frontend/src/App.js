@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { MemoryRouter } from 'react-router-dom'
 // Pages (on les créera juste après)
 import LoginEtudiant   from './pages/LoginEtudiant'
@@ -10,7 +10,7 @@ import DashboardAdmin  from './pages/DashboardAdmin'
 
 function App() {
   return (
-    <MemoryRouter>
+    <HashRouter>
       <Routes>
         {/* Page d'accueil = connexion étudiant */}
         <Route path="/"                 element={<LoginEtudiant />} />
@@ -24,7 +24,7 @@ function App() {
         {/* Pages admin */}
         <Route path="/admin/dashboard"  element={<DashboardAdmin />} />
       </Routes>
-    </MemoryRouter>
+    </HashRouter>
   )
 }
 

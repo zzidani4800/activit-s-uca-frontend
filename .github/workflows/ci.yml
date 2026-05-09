@@ -1,39 +1,32 @@
-<<<<<<< HEAD
-name: CI Frontend — Université Cadi Ayyad
+name: CI/CD Frontend — Activités Universitaires uca
 
 on:
   push:
     branches: [ main ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'frontend/**'
       - '.github/workflows/**'
-=======
-name: CI Frontend — Activités Universitaires uca
-
-# Se déclenche à chaque push ou pull request sur main
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
->>>>>>> 3fa04ec04a7166eb64b1b57e9c7bbd6e80e66169
 
 jobs:
-  test-and-build:
-    name: Tests Jest + Build React
+
+  # ─────────────────────────────────────
+  # JOB 1 : Tests Jest
+  # ─────────────────────────────────────
+  tests:
+    name: Tests Jest
     runs-on: ubuntu-latest
 
     steps:
-<<<<<<< HEAD
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4=
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
@@ -49,51 +42,86 @@ jobs:
         env:
           CI: true
 
+      - name: Upload rapport de coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: frontend/coverage/
+          retention-days: 7
+
+  # ─────────────────────────────────────
+  # JOB 2 : Build
+  # ─────────────────────────────────────
+  build:
+    name: Build React
+    runs-on: ubuntu-latest
+    needs: tests          # attend que les tests passent avant de builder
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installation des dépendances
+        working-directory: ./frontend
+        run: npm ci
+
       - name: Build de production
         working-directory: ./frontend
         run: npm run build
         env:
           CI: false
 
-      - name: Upload coverage report
+      - name: Sauvegarde du build
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: frontend/coverage/
-          retention-days: 7
-=======
-      # 1. Récupère le code du repo
-      - name: Checkout du code
-        uses: actions/checkout@v3
+          name: build-frontend
+          path: frontend/build/
+          retention-days: 1
 
-      # 2. Installe Node.js version 18
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+  # ─────────────────────────────────────
+  # JOB 3 : Deploy GitHub Pages
+  # (seulement sur push main, pas sur PR)
+  # ─────────────────────────────────────
+  deploy:
+    name: Deploy GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build          # attend que le build soit OK
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    permissions:
+      contents: write     # nécessaire pour push sur gh-pages
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'          # met en cache node_modules pour aller plus vite
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
-      # 3. Installe les dépendances
       - name: Installation des dépendances
-        run: npm ci               # npm ci = plus strict que npm install, parfait pour CI
+        working-directory: ./frontend
+        run: npm ci
 
-      # 4. Lance tous les tests Jest
-      - name: Lancement des tests Jest
-        run: npm test -- --watchAll=false --coverage
-        env:
-          CI: true               # nécessaire pour CRA en mode CI
-
-      # 5. Build de production
       - name: Build de production
+        working-directory: ./frontend
         run: npm run build
         env:
-          CI: false              # évite que les warnings React bloquent le build
+          CI: false
 
-      # 6. Sauvegarde le rapport de coverage
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+      - name: Deploy sur GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 7      # garde le rapport 7 jours
->>>>>>> 3fa04ec04a7166eb64b1b57e9c7bbd6e80e66169
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/build
+          publish_branch: gh-pages
