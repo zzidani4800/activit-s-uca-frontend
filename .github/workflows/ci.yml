@@ -1,0 +1,99 @@
+<<<<<<< HEAD
+name: CI Frontend — Université Cadi Ayyad
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/**'
+=======
+name: CI Frontend — Activités Universitaires uca
+
+# Se déclenche à chaque push ou pull request sur main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+>>>>>>> 3fa04ec04a7166eb64b1b57e9c7bbd6e80e66169
+
+jobs:
+  test-and-build:
+    name: Tests Jest + Build React
+    runs-on: ubuntu-latest
+
+    steps:
+<<<<<<< HEAD
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4=
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installation des dépendances
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Lancement des tests Jest
+        working-directory: ./frontend
+        run: npm test -- --watchAll=false --coverage
+        env:
+          CI: true
+
+      - name: Build de production
+        working-directory: ./frontend
+        run: npm run build
+        env:
+          CI: false
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: frontend/coverage/
+          retention-days: 7
+=======
+      # 1. Récupère le code du repo
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      # 2. Installe Node.js version 18
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'          # met en cache node_modules pour aller plus vite
+
+      # 3. Installe les dépendances
+      - name: Installation des dépendances
+        run: npm ci               # npm ci = plus strict que npm install, parfait pour CI
+
+      # 4. Lance tous les tests Jest
+      - name: Lancement des tests Jest
+        run: npm test -- --watchAll=false --coverage
+        env:
+          CI: true               # nécessaire pour CRA en mode CI
+
+      # 5. Build de production
+      - name: Build de production
+        run: npm run build
+        env:
+          CI: false              # évite que les warnings React bloquent le build
+
+      # 6. Sauvegarde le rapport de coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7      # garde le rapport 7 jours
+>>>>>>> 3fa04ec04a7166eb64b1b57e9c7bbd6e80e66169

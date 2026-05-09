@@ -1,0 +1,48 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,jsx}"],
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-lowest": "#ffffff",
+        "background": "#fff9eb",
+        "on-primary-container": "#fff3f0",
+        "surface-container-high": "#eee8da",
+        "on-secondary-container": "#7a4f41",
+        "surface-container": "#f3eddf",
+        "on-primary": "#ffffff",
+        "surface-container-low": "#f9f3e5",
+        "on-background": "#1d1c13",
+        "on-secondary": "#ffffff",
+        "error": "#ba1a1a",
+        "surface-variant": "#e8e2d4",
+        "outline": "#89726a",
+        "outline-variant": "#dcc1b7",
+        "secondary-container": "#fec4b2",
+        "surface": "#fff9eb",
+        "on-surface-variant": "#55433b",
+        "surface-container-highest": "#e8e2d4",
+        "on-surface": "#1d1c13",
+        "primary-container": "#b2562d",
+        "secondary": "#7f5445",
+        "primary": "#933f17",
+        "on-primary-fixed": "#370e00",
+        "error-container": "#ffdad6",
+        "on-error": "#ffffff",
+      },
+      borderRadius: {
+        DEFAULT: "0.125rem",
+        lg: "0.25rem",
+        xl: "0.5rem",
+        full: "0.75rem",
+      },
+      fontFamily: {
+        headline: ["Noto Serif", "serif"],
+        display: ["Noto Serif", "serif"],
+        body: ["Manrope", "sans-serif"],
+        label: ["Manrope", "sans-serif"],
+      },
+    },
+  },
+  plugins: [],
+}
