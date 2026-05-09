@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/activites-universitaires/static/css/main.1ecf44bf.css",
+    "main.js": "/activites-universitaires/static/js/main.34970d5c.js",
+    "index.html": "/activites-universitaires/index.html",
+    "main.1ecf44bf.css.map": "/activites-universitaires/static/css/main.1ecf44bf.css.map",
+    "main.34970d5c.js.map": "/activites-universitaires/static/js/main.34970d5c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ecf44bf.css",
+    "static/js/main.34970d5c.js"
+  ]
+}
